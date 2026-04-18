@@ -1,7 +1,9 @@
 *~
 *#*
+*.egg-info
 *.mp4
+.env
 .pytest_cache
+.ruff_cache
 .venv
 __pycache__
-uv.lock

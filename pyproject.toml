@@ -1,13 +1,33 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*", "audio_client*"]
+
 [project]
 name = "realtime-transcription"
 version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+  "amazon-transcribe",
+  "fastapi",
+  "numpy",
+  "python-dotenv",
+  "python-multipart",
+  "sounddevice",
+  "uvicorn[standard]",
+  "websockets",
+]
 
 [dependency-groups]
 dev = [
   "bump-my-version",
   "git-cliff",
+  "httpx",
   "pyright",
   "pytest",
+  "pytest-asyncio",
   "ruff",
 ]
 
@@ -21,7 +41,7 @@ tag = true
 tag_name = "v{new_version}"
 
 [[tool.bumpversion.files]]
-filename = "src/__init__.py"
+filename = "app/__init__.py"
 search = '__version__ = "{current_version}"'
 replace = '__version__ = "{new_version}"'
 
@@ -120,7 +140,7 @@ pythonpath = ["."]
 # ---------------------------------------------------------------------------
 [tool.ruff]
 exclude = [".venv"]
-include = ["scripts/*.py", "src"]
+include = ["scripts/*.py", "app", "audio_client"]
 fix = true
 line-length = 100
 output-format = "grouped"
@@ -161,7 +181,7 @@ max-complexity = 10
 # ---------------------------------------------------------------------------
 [tool.pyright]
 exclude = ["**/__pycache__"]
-include = ["scripts", "src"]
+include = ["scripts", "app", "audio_client"]
 pythonVersion = "3.13"
 reportMissingTypeStubs = false
 typeCheckingMode = "strict"

@@ -1,0 +1,54 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="arch" name="Architecture">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="computer" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#232F3E;dashed=1;verticalAlign=top;align=left;spacingLeft=10;fontSize=14;fontStyle=1;fontColor=#232F3E;container=0;collapsible=0;recursiveResize=0;" value="&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; One or more computers" vertex="1">
+          <mxGeometry height="330" width="460" x="30" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="aws" parent="1" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=14;fontStyle=1;container=0;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_aws_cloud;strokeColor=#232F3E;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#232F3E;dashed=0;" value="AWS" vertex="1">
+          <mxGeometry height="160" width="140" x="520" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="server" style="strokeColor=#232F3E;fontSize=9;fontColor=#232F3E;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;" target="transcribe" value="PCM 16kHz">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="transcribe" style="strokeColor=#232F3E;fontSize=9;fontColor=#232F3E;labelBackgroundColor=#FFFFFF;exitX=0;exitY=0.7;exitDx=0;exitDy=0;entryX=1;entryY=0.7;entryDx=0;entryDy=0;" target="server" value="transcript events">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="transcribe" parent="1" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#01A88D;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.transcribe;" value="AWS Transcribe&lt;br&gt;Streaming" vertex="1">
+          <mxGeometry height="60" width="60" x="560" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="mic" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=0;verticalAlign=middle;align=center;" value="Microphone&lt;br&gt;Mixer" vertex="1">
+          <mxGeometry height="50" width="80" x="70" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="pc_audio" parent="1" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#232F3E;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.client;" value="Audio PC&lt;br&gt;audio_client" vertex="1">
+          <mxGeometry height="60" width="60" x="243" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="server" parent="1" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#ED7100;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.traditional_server;" value="FastAPI Server" vertex="1">
+          <mxGeometry height="60" width="60" x="400" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="pc_monitor" parent="1" style="outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=none;fillColor=#232F3E;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.client;" value="Monitor PC&lt;br&gt;Browser" vertex="1">
+          <mxGeometry height="60" width="60" x="400" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="monitor_dev" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=0;verticalAlign=middle;align=center;" value="Dedicated&lt;br&gt;monitor" vertex="1">
+          <mxGeometry height="50" width="80" x="233" y="285" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="mic" style="strokeColor=#232F3E;fontSize=9;fontColor=#232F3E;labelBackgroundColor=#FFFFFF;" target="pc_audio" value="audio device">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="pc_audio" style="strokeColor=#232F3E;fontSize=9;fontColor=#232F3E;labelBackgroundColor=#FFFFFF;" target="server" value="WS audio&#xa;PCM 16kHz mono">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" style="strokeColor=#232F3E;fontSize=9;fontColor=#232F3E;labelBackgroundColor=#FFFFFF;" target="pc_monitor" value="WS transcript&#xa;JSON text">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="430" y="190" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="pc_monitor" style="strokeColor=#232F3E;fontSize=9;fontColor=#232F3E;labelBackgroundColor=#FFFFFF;" target="monitor_dev" value="HDMI / DP">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
