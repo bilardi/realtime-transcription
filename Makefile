@@ -22,7 +22,7 @@ release:
 	sed -i 's/<!-- [0-9]* -->//g' CHANGELOG.md
 	git add CHANGELOG.md
 	git commit --amend --no-edit
-	git tag -f v$$(python -c "from src import __version__; print(__version__)")
+	git tag -f v$$(python -c "from app import __version__; print(__version__)")
 	git push && git push --tags --force
 
 .PHONY: changelog # update CHANGELOG.md and amend it on the commit
