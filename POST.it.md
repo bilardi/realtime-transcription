@@ -22,7 +22,7 @@ Partiamo dal motore. Poi da cosa ci sta attorno.
 
 ### STT: chi sbaglia, chi inventa
 
-Non ho fatto benchmark empirici sui tre. La scelta si è giocata su due assi: **struttura del modello** (generativo o no) e **delivery** (self-hosted o managed). Le proprietà in tabella vengono da documentazione di prodotto e dall'osservazione diretta di Whisper a PyCon 2025, non da test A/B.
+Non ho fatto benchmark empirici sui tre. La scelta si è giocata su due assi: **struttura del modello** (generativo o no) e **delivery** (self-hosted o managed). Le proprietà in tabella vengono da documentazione di prodotto e dall'osservazione diretta di Whisper alla PyCon IT 2025, non da test A/B.
 
 | Criterio | Whisper locale | Amazon Transcribe Streaming | STT generativo a pagamento |
 |---|---|---|---|
@@ -40,7 +40,7 @@ Scelta: Amazon Transcribe Streaming. Non perché sia "il migliore" in assoluto, 
 
 ### Repo nuovo o fork del vecchio ?
 
-L'altra grossa scelta: fork di `realtime-transcription-fastrtc` (quello già usato a PyCon 2025) o repo nuovo che prende solo i pezzi buoni dai due predecessori (`realtime-transcription-fastrtc` e il mio `video-to-text`) ?
+L'altra grossa scelta: fork di `realtime-transcription-fastrtc` (quello già usato alla PyCon IT 2025) o repo nuovo che prende solo i pezzi buoni dai due predecessori (`realtime-transcription-fastrtc` e il mio `video-to-text`) ?
 
 | Criterio | Fork | Repo nuovo |
 |---|---|---|
