@@ -15,7 +15,7 @@ It all started with the collaboration with PyCon IT. At PyCon IT 2025 they set u
 
 For PyCon IT 2026 a different path was needed, on a non-negotiable anchor: no hallucinations. If the model doesn't hear, ok, skip a word. If it hears badly, ok, transcribe badly. But it must not write sentences I didn't say.
 
-A bigger Whisper I haven't tested. Other paid generative Speech To Text (STT) services either: they stay in the same category of a model that produces text token after token, so the structural risk of invention stays. To get out of the category, a managed service based on acoustic decoding was needed. And since it's PyCon, let's also grab the bonus of decoupling the pieces and writing it in a testable way.
+Fixing Whisper's hallucinations directly (Voice Activity Detection, tuning decoding parameters, logprob filters, fine-tuning, ..) would have been a separate effort: I didn't have the time, with everything else to build. A bigger Whisper I haven't tested. Other paid generative Speech To Text (STT) services either: they stay in the same category of a model that produces text token after token, so the structural risk of invention stays. To get out of the category, a managed service based on acoustic decoding was needed. And since it's PyCon, let's also grab the bonus of decoupling the pieces and writing it in a testable way.
 
 ## A model that gets it wrong but doesn't make it up
 

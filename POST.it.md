@@ -14,7 +14,7 @@ Tutto è nato dalla collaborazione con PyCon IT. Alla PyCon IT 2025 hanno messo 
 
 Per la PyCon IT 2026 serviva una strada diversa, su un perno non negoziabile: niente allucinazioni. Se il modello non sente, ok, salta una parola. Se sente male, ok, trascrive male. Ma non deve scrivere frasi che non ho pronunciato.
 
-Whisper più grande non l'ho testato. Altri servizi Speech To Text (STT) generativi a pagamento nemmeno: restano nella stessa categoria di un modello che produce testo token dopo token, quindi il rischio strutturale di invenzione rimane. Per uscire dalla categoria serviva un servizio gestito basato su decoding acustico. E siccome è la PyCon, prendiamoci pure il bonus di disaccoppiare i pezzi e di scriverlo in modo testabile.
+Sistemare direttamente le allucinazioni di Whisper (Voice Activity Detection, tuning dei parametri di decoding, filtri sui logprob, fine-tuning, ..) sarebbe stato un fronte a sé: non avevo il tempo, con tutto il resto da costruire. Whisper più grande non l'ho testato. Altri servizi Speech To Text (STT) generativi a pagamento nemmeno: restano nella stessa categoria di un modello che produce testo token dopo token, quindi il rischio strutturale di invenzione rimane. Per uscire dalla categoria serviva un servizio gestito basato su decoding acustico. E siccome è la PyCon, prendiamoci pure il bonus di disaccoppiare i pezzi e di scriverlo in modo testabile.
 
 ## Un modello che sbaglia ma non inventa
 
