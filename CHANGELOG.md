@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Fix PyCon naming
 - Explain why Whisper hallucinations not fixed
 - Fix layers on architecture image
+- Polish articles
 
 ## [0.1.0] - 2026-04-19
 ### 🚀 Features

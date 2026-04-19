@@ -22,7 +22,7 @@ Partiamo dal motore. Poi da cosa ci sta attorno.
 
 ### STT: chi sbaglia, chi inventa
 
-Non ho fatto benchmark empirici sui tre. La scelta si è giocata su due assi: **struttura del modello** (generativo o no) e **delivery** (self-hosted o managed). Le proprietà in tabella vengono da documentazione di prodotto e dall'osservazione diretta di Whisper alla PyCon IT 2025, non da test A/B.
+Non ho fatto benchmark empirici sui tre. La scelta si è giocata su due assi: **struttura del modello** (generativo o no) e **delivery** (self-hosted o managed). Le proprietà in tabella vengono da documentazione di prodotto e dall'osservazione diretta di Whisper alla PyCon IT 2025, non da A/B test.
 
 | Criterio | Whisper locale | Amazon Transcribe Streaming | STT generativo a pagamento |
 |---|---|---|---|
@@ -34,13 +34,13 @@ Non ho fatto benchmark empirici sui tre. La scelta si è giocata su due assi: **
 | Costo | hardware on-site | $0.024/min | variabile |
 | Latenza dichiarata | 1-15s fine segmento | ~300ms partial | dipende |
 
-Il criterio pesante è l'architettura. Un modello non generativo non può, per costruzione, aggiungere parole che non ha sentito: al peggio omette o sbaglia. Un modello generativo sì. Gli altri criteri (rete, costo, latenza) sono trade-off secondari, tutti accettabili per il contesto conferenza: internet c'è, un talk da 30 minuti costa ~$0.72, i partial results arrivano in ~300ms.
+Il criterio più importante è l'architettura. Un modello non generativo non può, per costruzione, aggiungere parole che non ha sentito: alla peggio omette o sbaglia. Un modello generativo sì. Gli altri criteri (rete, costo, latenza) sono trade-off secondari, tutti accettabili per un contesto di conferenza: internet c'è, un talk da 30 minuti costa ~$0.72, i partial results arrivano in ~300ms.
 
 Scelta: Amazon Transcribe Streaming. Non perché sia "il migliore" in assoluto, ma perché sta nella categoria che esclude alla radice il problema per cui siamo qui. Il repo [`video-to-text`](https://github.com/bilardi/video-to-text) l'avevo scritto apposta per testare Transcribe come alternativa a Whisper.
 
 ### Repo nuovo o fork del vecchio ?
 
-L'altra grossa scelta: fork di `realtime-transcription-fastrtc` (quello già usato alla PyCon IT 2025) o repo nuovo che prende solo i pezzi buoni dai due predecessori (`realtime-transcription-fastrtc` e il mio `video-to-text`) ?
+L'altra grande scelta: fork di `realtime-transcription-fastrtc` (quello già usato alla PyCon IT 2025) o repo nuovo che prende solo i pezzi buoni dai due predecessori (`realtime-transcription-fastrtc` e `video-to-text`) ?
 
 | Criterio | Fork | Repo nuovo |
 |---|---|---|
@@ -71,7 +71,7 @@ L'architettura alternativa è un unico processo (un unico programma in esecuzion
 | Testabilità | dipendenze interne | ogni componente in isolamento |
 | Overhead di comunicazione | niente | chiamate di rete |
 
-Scelta: disaccoppiata. Funziona sia in sviluppo con tutto su un computer (localhost), sia in conferenza con tre computer separati (client audio in regia vicino al mixer, server su un computer qualsiasi connesso in rete, client display sul computer che pilota il monitor). La monolitica invece chiude tutto su un solo computer, e il codice accoppia i componenti: test e sostituzione richiedono più lavoro. Con più sale il conto peggiora: servirebbe una copia intera del sistema per sala (audio, server, display per ciascuna), mentre la disaccoppiata condivide un solo server tra tutte le sale, e ogni sala aggiunge solo un client audio e display sullo stesso computer, o, per evitare di tirare un cavo volante, un secondo client display vicino al monitor.
+Scelta: disaccoppiata. Funziona sia in sviluppo con tutto su un computer (localhost), sia in conferenza con tre computer separati: client audio in regia vicino al mixer, server su un computer qualsiasi connesso in rete, e client display sul computer che pilota il monitor. La monolitica invece chiude tutto su un solo computer, e il codice accoppia i componenti: test e sostituzione richiedono più lavoro. Con più sale il conto peggiora: servirebbe una copia intera del sistema per sala (audio, server, display per ciascuna), mentre la disaccoppiata condivide un solo server tra tutte le sale, e ogni sala aggiunge solo un client audio e display sullo stesso computer, o, per evitare di tirare un cavo volante, un secondo client display vicino al monitor.
 
 ### Audio client: browser o standalone ?
 
@@ -85,7 +85,7 @@ Due candidati: l'app browser con `getUserMedia` (la strada di `realtime-transcri
 | Dipendenza da browser | sì | no |
 | Testabilità | media | alta |
 
-Scelta: Python standalone con `sounddevice`. In conferenza l'audio non viene dal microfono del laptop dello speaker, viene da un mixer di sala o da un microfono dedicato collegato via USB. Le Web Audio API del browser non espongono sink virtuali e mixer USB come device separati. Uno script Python con `sounddevice` accede a tutti i device che il sistema operativo espone, loopback e mixer inclusi.
+Scelta: Python standalone con `sounddevice`. In conferenza l'audio non viene dal microfono del laptop dello speaker, ma da un mixer di sala o da un microfono dedicato collegato via USB. Le Web Audio API del browser non espongono sink virtuali e mixer USB come device separati. Invece uno script Python con `sounddevice` accede a tutti i device che il sistema operativo espone, loopback e mixer inclusi.
 
 ### Protocollo tra client audio e server
 
@@ -138,7 +138,7 @@ Concretamente: ogni connessione WS è un handler indipendente su FastAPI, e ognu
 
 ### Display: app dinamica o HTML statico ?
 
-Il display è quello che gli spettatori guardano: un monitor dedicato con il testo che scorre man mano che arriva. Deve aggiornarsi in tempo reale ricevendo messaggi dal server, ma non fa altro: niente form, niente interazione.
+In questo caso, il display è quello che gli spettatori guardano: un monitor dedicato con il testo che scorre man mano che arriva. Deve aggiornarsi in tempo reale ricevendo messaggi dal server, ma non fa altro: niente form, niente interazione.
 
 Due strade: un'app dinamica (React, Vue o simili, con build e state management), oppure una pagina HTML statica con un po' di JS che apre una WS e appende testo.
 

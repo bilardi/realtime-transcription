@@ -35,13 +35,13 @@ I didn't run empirical benchmarks on the three. The choice played out on two axe
 | Cost | on-site hardware | $0.024/min | variable |
 | Declared latency | 1-15s end of segment | ~300ms partial | depends |
 
-The heavy criterion is architecture. A non-generative model cannot, by construction, add words it didn't hear: at worst it skips or gets it wrong. A generative model can. The other criteria (network, cost, latency) are secondary trade-offs, all acceptable for the conference context: there's internet, a 30-minute talk costs ~$0.72, partial results arrive in ~300ms.
+The most important criterion is architecture. A non-generative model cannot, by construction, add words it didn't hear: at worst it skips or gets it wrong. A generative model can. The other criteria (network, cost, latency) are secondary trade-offs, all acceptable for a conference context: there's internet, a 30-minute talk costs ~$0.72, partial results arrive in ~300ms.
 
 Choice: Amazon Transcribe Streaming. Not because it's "the best" in absolute terms, but because it sits in the category that rules out at the root the problem we're here for. The repo [`video-to-text`](https://github.com/bilardi/video-to-text) I wrote on purpose to test Transcribe as an alternative to Whisper.
 
 ### New repo or fork of the old one ?
 
-The other big choice: fork of `realtime-transcription-fastrtc` (the one already used at PyCon IT 2025), or a new repo that takes only the good pieces from the two predecessors (`realtime-transcription-fastrtc` and my `video-to-text`) ?
+The other big choice: fork of `realtime-transcription-fastrtc` (the one already used at PyCon IT 2025), or a new repo that takes only the good pieces from the two predecessors (`realtime-transcription-fastrtc` and `video-to-text`) ?
 
 | Criterion | Fork | New repo |
 |---|---|---|
@@ -72,7 +72,7 @@ The alternative architecture is a single process (a single running program) that
 | Testability | internal dependencies | each component in isolation |
 | Communication overhead | none | network calls |
 
-Choice: decoupled. It works both in development with everything on one computer (localhost), and at the conference with three separate computers (audio client in the control room near the mixer, server on any computer connected to the network, display client on the computer that drives the monitor). The monolithic instead locks everything onto a single computer, and the code couples the components: tests and replacements require more work. With more rooms the bill gets worse: you'd need a full copy of the system per room (audio, server, display for each), whereas the decoupled shares a single server across all rooms, and each room only adds an audio-and-display client on the same computer, or, to avoid running a long cable across the room, a second display client near the monitor.
+Choice: decoupled. It works both in development with everything on one computer (localhost), and at the conference with three separate computers: audio client in the control room near the mixer, server on any computer connected to the network, and display client on the computer that drives the monitor. The monolithic instead locks everything onto a single computer, and the code couples the components: tests and replacements require more work. With more rooms the bill gets worse: you'd need a full copy of the system per room (audio, server, display for each), whereas the decoupled shares a single server across all rooms, and each room only adds an audio-and-display client on the same computer, or, to avoid running a long cable across the room, a second display client near the monitor.
 
 ### Audio client: browser or standalone ?
 
@@ -86,7 +86,7 @@ Two candidates: the browser app with `getUserMedia` (`realtime-transcription-fas
 | Browser dependency | yes | no |
 | Testability | medium | high |
 
-Choice: standalone Python with `sounddevice`. At a conference, audio doesn't come from the speaker's laptop microphone, it comes from a room mixer or a dedicated microphone connected via USB. The browser's Web Audio APIs don't expose virtual sinks and USB mixers as separate devices. A Python script with `sounddevice` sees all the devices the operating system exposes, loopback and mixer included.
+Choice: standalone Python with `sounddevice`. At a conference, audio doesn't come from the speaker's laptop microphone, but from a room mixer or a dedicated microphone connected via USB. The browser's Web Audio APIs don't expose virtual sinks and USB mixers as separate devices. Instead, a Python script with `sounddevice` sees all the devices the operating system exposes, loopback and mixer included.
 
 ### Protocol between audio client and server
 
@@ -139,7 +139,7 @@ Concretely: every WS connection is an independent handler on FastAPI, and each o
 
 ### Display: dynamic app or static HTML ?
 
-The display is what the audience looks at: a dedicated monitor with text scrolling as it arrives. It must update in real time receiving messages from the server, but does nothing else: no forms, no interaction.
+In this case, the display is what the audience looks at: a dedicated monitor with text scrolling as it arrives. It must update in real time receiving messages from the server, but does nothing else: no forms, no interaction.
 
 Two paths: a dynamic app (React, Vue or similar, with build and state management), or a static HTML page with a bit of JS that opens a WS and appends text.
 
