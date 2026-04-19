@@ -1,5 +1,5 @@
 ---
-title: "Realtime transcription: scelte e storie per la PyConIT"
+title: "Realtime transcription: scelte e storie per la PyCon IT"
 date: 2026-04-20
 categories: [stt]
 tags: [aws, transcribe, docker, fastapi]
@@ -10,7 +10,7 @@ repo: bilardi/realtime-transcription
 
 ## Perché tanto interesse per il realtime transcription
 
-Tutto è nato dalla collaborazione con PyCon IT. Alla PyCon IT 2025 hanno messo in piedi una trascrizione live con Whisper locale su Graphics Processing Unit (GPU), basato sul repo [sofdog-gh/realtime-transcription-fastrtc](https://github.com/sofdog-gh/realtime-transcription-fastrtc). Con i video di YouTube usati come test, tutto a posto. Con l'audio vero di una sala di conferenza, Whisper ha iniziato ad allucinare: un modello generativo, se gli dai un segnale che non riconosce, non lascia bianco, scrive qualcosa comunque.
+Tutto è nato dalla collaborazione con PyCon IT. Alla PyCon IT 2025 hanno messo in piedi una trascrizione live con Whisper locale su Graphics Processing Unit (GPU), basato sul repo [`realtime-transcription-fastrtc`](https://github.com/sofdog-gh/realtime-transcription-fastrtc). Con i video di YouTube usati come test, tutto a posto. Con l'audio vero di una sala di conferenza, Whisper ha iniziato ad allucinare: un modello generativo, se gli dai un segnale che non riconosce, non lascia bianco, scrive qualcosa comunque.
 
 Per la PyCon IT 2026 serviva una strada diversa, su un perno non negoziabile: niente allucinazioni. Se il modello non sente, ok, salta una parola. Se sente male, ok, trascrive male. Ma non deve scrivere frasi che non ho pronunciato.
 
@@ -205,6 +205,26 @@ I ~50ms sono il buffer di `module-loopback`. Per la trascrizione non cambia null
 Tutto è incapsulato in due comandi `make`: `make loopback_redirect APP=firefox` (che accetta anche `MONITOR=1` per il ramo di ascolto in cuffia) e `make loopback_clean` che rimette a posto.
 
 Scelta pratica: default `MONITOR=0`. In conferenza l'audio viene dal mixer, non dal laptop, quindi sentirlo in locale non serve. `MONITOR=1` è un lusso da sviluppo.
+
+## Quanto hardware serve ?
+
+Non ho ancora benchmarkato il sistema su hardware specifico, quindi mi baso su dimensioni tipiche di applicazioni Python simili. Meglio sovradimensionare rispetto a scegliere il minimo "a pelo": su un deploy reale vuoi margine, non cadere al primo picco.
+
+| Componente | RAM/CPU | Esempio consigliato | Note |
+|---|---|---|---|
+| Client audio | ~50-100MB | Pi 4 2GB con mic USB | Pi 3 in teoria basta ma tirato |
+| Server | ~100-200MB base + ~30-50MB per sala | EC2 t4g.small (2GB, ARM) o Pi 4 4-8GB | Pi 4 regge 1-2 sale; EC2 per di più |
+| Client display | ~200-300MB per Chromium | Pi 4 4GB | Pi 4 2GB in teoria basta ma tirato |
+
+Tre scenari di deploy:
+
+| Scenario | Device consigliato | Quando e perché |
+|---|---|---|
+| Tutti separati | Pi 4 2GB (audio) + EC2 t4g.small (server) + Pi 4 4GB (display) | Conferenza multi-sala; server in cloud per condivisione |
+| Tutti insieme | Un laptop 8GB, oppure Pi 4 8GB con mic USB | Sviluppo, demo locale |
+| Audio + server insieme, display separato | Pi 4 8GB (audio+server) + Pi 4 4GB (display) | Una sola sala, zero cloud; il Pi con audio ospita anche il server |
+
+Per una sala, due Pi bastano. Con il Pi 5 (server) puoi spingerti a 2-3 sale, oltre conviene EC2. EC2 o un laptop più potente sono upgrade naturali ovunque, se vuoi più margine.
 
 ## C'è altro da aggiungere ?
 
