@@ -1,4 +1,4 @@
-"""AWS Transcribe Streaming integration.
+"""Amazon Transcribe Streaming integration.
 
 Ported from video-to-text/app/transcribe_service.py with:
 - configurable language (parameter, not hardcoded)
@@ -35,7 +35,7 @@ class TranscriptHandler(TranscriptResultStreamHandler):
         """Create a handler wired to an AWS output stream.
 
         Args:
-            output_stream: AWS Transcribe output stream to read events from.
+            output_stream: Amazon Transcribe output stream to read events from.
 
         Returns:
             A new TranscriptHandler whose handle_events iterates the given stream.

@@ -1,6 +1,6 @@
 # Realtime transcription
 
-Realtime transcription of conference talks, displayed on a dedicated monitor per room. Uses AWS Transcribe Streaming as the STT engine.
+Realtime transcription of conference talks, displayed on a dedicated monitor per room. Uses Amazon Transcribe Streaming as the STT engine.
 
 ## Architecture
 
@@ -10,7 +10,7 @@ Realtime transcription of conference talks, displayed on a dedicated monitor per
 sequenceDiagram
     participant AC as Audio Client
     participant S as FastAPI Server
-    participant T as AWS Transcribe
+    participant T as Amazon Transcribe
     participant D as Display (Browser)
 
     AC->>S: WebSocket /ws/audio/{sala}?lang=it-IT
@@ -32,7 +32,7 @@ sequenceDiagram
 
 Three decoupled components, connected via WebSocket to a central server:
 
-1. **FastAPI server** (cloud or any PC): receives audio, forwards it to AWS Transcribe, publishes transcript text
+1. **FastAPI server** (cloud or any PC): receives audio, forwards it to Amazon Transcribe, publishes transcript text
 2. **Audio client** (Python script): captures audio from a system device (microphone, mixer) and sends it to the server
 3. **Display** (browser): connects to the server, receives text, renders it on a black background
 
@@ -50,15 +50,15 @@ Three decoupled components, connected via WebSocket to a central server:
 
 - **`.env` is gitignored**: contains `AWS_PROFILE` and `AWS_REGION`, never committed
 - **No authentication on WebSocket endpoints**: designed for trusted LAN or private cloud; do not expose to the public internet without adding auth
-- **AWS credentials are not exposed to clients**: only the server communicates with AWS Transcribe
+- **AWS credentials are not exposed to clients**: only the server communicates with Amazon Transcribe
 
 ## Estimated costs
 
 | Resource | Cost |
 |----------|------|
-| AWS Transcribe Streaming | $0.024/min |
+| Amazon Transcribe Streaming | $0.024/min |
 
-A 30-minute talk costs ~$0.72. See the [AWS Transcribe pricing page](https://aws.amazon.com/transcribe/pricing/) for details.
+A 30-minute talk costs ~$0.72. See the [Amazon Transcribe pricing page](https://aws.amazon.com/transcribe/pricing/) for details.
 
 ## Prerequisites
 
@@ -87,7 +87,7 @@ Then follow the [aws-docker-host README](https://github.com/bilardi/aws-docker-h
 
 ### Local deploy
 
-Run the server on a PC. All components (audio client, display) must be on the same local network. Only the server needs internet to reach AWS Transcribe.
+Run the server on a PC. All components (audio client, display) must be on the same local network. Only the server needs internet to reach Amazon Transcribe.
 
 ```sh
 # create .env from template
@@ -149,7 +149,7 @@ To also show partial results: `http://localhost:8000/sala/test?partial=true`
 app/
     __init__.py  # package + version
     main.py  # FastAPI server: HTTP + WebSocket endpoints
-    transcribe_service.py  # AWS Transcribe integration
+    transcribe_service.py  # Amazon Transcribe integration
     rooms.py  # room registry: maps sala -> display clients
 audio_client/
     __init__.py  # package

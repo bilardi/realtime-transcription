@@ -53,7 +53,7 @@ async def ws_audio(
     sala: str,
     lang: str = Query("it-IT"),
 ) -> None:
-    """Receive PCM audio chunks and stream to AWS Transcribe."""
+    """Receive PCM audio chunks and stream to Amazon Transcribe."""
     await websocket.accept()
 
     registry.set_lang(sala, lang)
