@@ -4,7 +4,7 @@ date: 2026-04-20
 categories: [stt]
 tags: [aws, transcribe, docker, fastapi]
 repo: bilardi/realtime-transcription
-social_summary: "#RealtimeTranscription for #PyConIT 🎙️\n\nWhisper hallucinated on real conference audio: a problem I skipped for time: everything else to build.\n\n🔮 Spoiler: #AmazonTranscribe doesn't generate text, it decodes it.\n\nIn the article: the choices I made, and the stories you only find when plugging things in (Linux audio is a zoo) 😄"
+social_summary: "#RealtimeTranscription for #PyConIT 🎙️\n\nWhisper hallucinated on real conference audio: a problem I skipped for time: everything else to build.\n\n🔮 Spoiler: #AmazonTranscribe doesn't generate text, it decodes it.\n\nIn the article: choices I made, and stories you only find when plugging things in (Linux audio is a zoo) 😄"
 ---
 
 ![Architecture](images/architecture.post.drawio.png)
